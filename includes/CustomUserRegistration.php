@@ -2,6 +2,7 @@
 
 
 require_once 'load-assets.php';
+require_once 'registration.php';
 
 class CustomUserRegistration
 {
@@ -18,7 +19,7 @@ class CustomUserRegistration
     function cur_shortcode(): bool|string
     {
         ob_start();
-        echo "shortcode content here...";
+        registration_form();
         return ob_get_clean();
     }
 }
