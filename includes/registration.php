@@ -100,6 +100,22 @@ function registration_validation( $username, $password, $email, $website): ?WP_E
 function registration_form($username='', $password='', $email='', $website='', $first_name='', $last_name='', $bio='')
 { ?>
 	<div class="d-flex flex-column justify-content-center align-items-center" id="registration-container">
+        <?php
+        global $errors;
+        global $submitted;
+        if (!empty($errors)) { ?>
+            <div class="alert alert-danger my-1">
+                <?php global  $errors;
+                foreach ( $errors as $error ) { ?>
+                    <div> - <?php echo $error; ?> </div>
+                <?php } ?>
+            </div>
+        <?php }
+        if($submitted) {?>
+            <div class="alert alert-success my-1">
+                Registration complete. Goto <a href="<?php echo (get_site_url() . '/wp-login.php'); ?>">login page</a>
+            </div>
+        <?php } ?>
         <h1 class="my-4">User Registration Form</h1>
         <form method="post">
             <div class="row m-0">
