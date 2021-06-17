@@ -7,12 +7,50 @@ function custom_user_registration() {
             $_POST['username'], $_POST['password'], $_POST['email'], $_POST['website']
         );
 
-        print_r($reg_errors);
+        // sanitize user form input
+        $username   =   sanitize_user( $_POST['username'] );
+        $password   =   esc_attr( $_POST['password'] );
+        $email      =   sanitize_email( $_POST['email'] );
+        $website    =   esc_url( $_POST['website'] );
+        $first_name =   sanitize_text_field( $_POST['fname'] );
+        $last_name  =   sanitize_text_field( $_POST['lname'] );
+        $bio        =   esc_textarea( $_POST['bio'] );
+
+        // call @function complete_registration to create the user
+        // only when no WP_error is found
+        complete_registration(
+            $reg_errors, $username, $password, $email, $website, $first_name, $last_name, $bio
+        );
+
+        global $submitted;
+        if ($submitted) {
+            unset($_POST);
+            $username = $password = $email = $website = $first_name = $last_name = $bio = '';
+        }
     }
 
     registration_form(
         $username, $password, $email, $website, $first_name, $last_name, $bio
     );
+}
+
+function complete_registration($reg_errors, $username, $password, $email, $website, $first_name, $last_name, $bio)
+{
+    global $submitted;
+    $submitted = false;
+    if ( 1 > count( $reg_errors->get_error_messages() ) ) {
+        $userdata = array(
+            'user_login'    =>   $username,
+            'user_email'    =>   $email,
+            'user_pass'     =>   $password,
+            'user_url'      =>   $website,
+            'first_name'    =>   $first_name,
+            'last_name'     =>   $last_name,
+            'description'   =>   $bio,
+        );
+        wp_insert_user( $userdata );
+        $submitted = true;
+    }
 }
 
 function registration_validation( $username, $password, $email, $website): ?WP_Error {
