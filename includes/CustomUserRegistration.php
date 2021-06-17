@@ -19,7 +19,7 @@ class CustomUserRegistration
     function cur_shortcode(): bool|string
     {
         ob_start();
-        registration_form();
+        custom_user_registration();
         return ob_get_clean();
     }
 }
