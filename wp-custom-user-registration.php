@@ -12,3 +12,13 @@ defined('ABSPATH') || exit;
 if (!defined('CR_PLUGIN_FILE')) {
     define('CR_PLUGIN_FILE', __FILE__);
 }
+
+if ( ! class_exists( 'CustomUserRegistration', false ) ) {
+    require_once dirname( CR_PLUGIN_FILE ) . '/includes/CustomUserRegistration.php';
+}
+
+function CUR(): CustomUserRegistration {
+    return new CustomUserRegistration();
+}
+
+CUR();
